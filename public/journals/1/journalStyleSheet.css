@@ -1,0 +1,65 @@
+#headerTitle h1 {
+        font-family: "Gill Sans MT", Calibri, sans-serif;
+	color: white;
+}
+
+body {
+	font-family: "Gill Sans MT", Calibri, sans-serif;
+	font-size: 110%;
+}
+
+h1, h2, h3 {
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+}
+
+#main h2 {
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+}
+
+#header {
+	background-color: #774553;
+}
+
+#content { 
+	font-size: 0.9em;
+}
+
+
+
+#rightSidebar {
+	font-size: 0.8em;
+}
+
+#sidebar div.block span.blockTitle {
+	text-transform: none;
+}
+
+
+#bjmhfooter {
+        width: 100%;
+        background-color: #774553;
+        display: block;
+        border-top: 1px solid #d4d4d4;
+        padding: 0.5em 0 0.25em 10%;
+        color: white;
+	font-size: 0.9em;
+
+}
+
+#bjmhfooter a {
+	color: white;
+}
+
+#bjmhfooter .footerbox {
+	max-width: 300px;
+	float: left;
+	margin-right: 50px;
+}
+
+
+/* make form input boxes suck less */
+input.textField, select.selectMenu, textarea.textArea, input.uploadField {
+	border: 1px solid #aaa;
+}
+
+
