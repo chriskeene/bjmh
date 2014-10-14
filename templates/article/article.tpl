@@ -124,6 +124,6 @@
 	{/if}
 {/foreach}
 {call_hook name="Templates::Article::MoreInfo"}
-{include file="article/comments.tpl"}
+{* include file="article/comments.tpl" *}
 
 {include file="article/footer.tpl"}

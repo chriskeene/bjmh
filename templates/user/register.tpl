@@ -116,12 +116,13 @@
 			<td class="label">{fieldLabel name="lastName" required="true" key="user.lastName"}</td>
 			<td class="value"><input type="text" id="lastName" name="lastName" value="{$lastName|escape}" size="20" maxlength="90" class="textField" /></td>
 		</tr>
-
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="initials" key="user.initials"}</td>
 			<td class="value"><input type="text" id="initials" name="initials" value="{$initials|escape}" size="5" maxlength="5" class="textField" />&nbsp;&nbsp;{translate key="user.initialsExample"}</td>
 		</tr>
-
+-->
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="gender-m" key="user.gender"}</td>
 			<td class="value">
@@ -130,6 +131,7 @@
 				</select>
 			</td>
 		</tr>
+-->
 
 		<tr valign="top">
 			<td class="label">{fieldLabel name="affiliation" key="user.affiliation"}</td>
