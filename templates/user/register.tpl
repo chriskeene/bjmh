@@ -15,15 +15,15 @@
 
 <form id="register" method="post" action="{url op="registerUser"}">
 
-<p>{translate key="user.register.completeForm"}</p>
+<p>{translate key="user.register.completeForm"}
 
 {if !$implicitAuth}
 	{if !$existingUser}
 		{url|assign:"url" page="user" op="register" existingUser=1}
-		<p>{translate key="user.register.alreadyRegisteredOtherJournal" registerUrl=$url}</p>
+		{translate key="user.register.alreadyRegisteredOtherJournal" registerUrl=$url}</p>
 	{else}
 		{url|assign:"url" page="user" op="register"}
-		<p>{translate key="user.register.notAlreadyRegisteredOtherJournal" registerUrl=$url}</p>
+		{translate key="user.register.notAlreadyRegisteredOtherJournal" registerUrl=$url}</p>
 		<input type="hidden" name="existingUser" value="1"/>
 	{/if}
 
@@ -140,11 +140,12 @@
 				<span class="instruct">{translate key="user.affiliation.description"}</span>
 			</td>
 		</tr>
-
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="signature" key="user.signature"}</td>
 			<td class="value"><textarea name="signature[{$formLocale|escape}]" id="signature" rows="5" cols="40" class="textArea">{$signature[$formLocale]|escape}</textarea></td>
 		</tr>
+-->
 
 		<tr valign="top">
 			<td class="label">{fieldLabel name="email" required="true" key="user.email"}</td>
@@ -160,27 +161,31 @@
 			<td class="label">{fieldLabel name="orcid" key="user.orcid"}</td>
 			<td class="value"><input type="text" id="orcid" name="orcid" value="{$orcid|escape}" size="40" maxlength="255" class="textField" /><br />{translate key="user.orcid.description"}</td>
 		</tr>
-
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="userUrl" key="user.url"}</td>
 			<td class="value"><input type="text" id="userUrl" name="userUrl" value="{$userUrl|escape}" size="30" maxlength="255" class="textField" /></td>
 		</tr>
-
+-->
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="phone" key="user.phone"}</td>
 			<td class="value"><input type="text" name="phone" id="phone" value="{$phone|escape}" size="15" maxlength="24" class="textField" /></td>
 		</tr>
-
+-->
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="fax" key="user.fax"}</td>
 			<td class="value"><input type="text" name="fax" id="fax" value="{$fax|escape}" size="15" maxlength="24" class="textField" /></td>
 		</tr>
-
+-->
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="mailingAddress" key="common.mailingAddress"}</td>
 			<td class="value"><textarea name="mailingAddress" id="mailingAddress" rows="3" cols="40" class="textArea">{$mailingAddress|escape}</textarea></td>
 		</tr>
-
+-->
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="country" key="common.country"}</td>
 			<td class="value">
@@ -190,11 +195,13 @@
 				</select>
 			</td>
 		</tr>
-
+-->
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="biography" key="user.biography"}<br />{translate key="user.biography.description"}</td>
 			<td class="value"><textarea name="biography[{$formLocale|escape}]" id="biography" rows="5" cols="40" class="textArea">{$biography[$formLocale]|escape}</textarea></td>
 		</tr>
+-->
 
 		<tr valign="top">
 			<td class="label">{fieldLabel name="sendPassword" key="user.sendPassword"}</td>
