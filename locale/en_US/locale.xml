@@ -829,7 +829,7 @@ current password.<br /><br />Enter your email address below to reset your passwo
 	<message key="current.noCurrentIssueDesc">This journal has not published any issues.</message>
 
 	<!-- Archive index -->
-	<message key="archive.archives">Archives</message>
+	<message key="archive.archives">Issues</message>
 	<message key="archive.browse">Browse through the older issues</message>
 	<message key="archive.issueUnavailable">Issue Unavailable</message>
 
