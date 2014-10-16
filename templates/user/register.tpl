@@ -149,7 +149,7 @@
 
 		<tr valign="top">
 			<td class="label">{fieldLabel name="email" required="true" key="user.email"}</td>
-			<td class="value"><input type="text" id="email" name="email" value="{$email|escape}" size="30" maxlength="90" class="textField" /> {if $privacyStatement}<a class="action" href="#privacyStatement">{translate key="user.register.privacyStatement"}</a>{/if}</td>
+			<td class="value"><input type="email" id="email" name="email" value="{$email|escape}" size="30" maxlength="90" class="textField" /> {if $privacyStatement}<a class="action" href="#privacyStatement">{translate key="user.register.privacyStatement"}</a>{/if}</td>
 		</tr>
 
 		<tr valign="top">
@@ -157,10 +157,12 @@
 			<td class="value"><input type="text" id="confirmEmail" name="confirmEmail" value="{$confirmEmail|escape}" size="30" maxlength="90" class="textField" /></td>
 		</tr>
 
+<!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="orcid" key="user.orcid"}</td>
 			<td class="value"><input type="text" id="orcid" name="orcid" value="{$orcid|escape}" size="40" maxlength="255" class="textField" /><br />{translate key="user.orcid.description"}</td>
 		</tr>
+-->
 <!--
 		<tr valign="top">
 			<td class="label">{fieldLabel name="userUrl" key="user.url"}</td>
