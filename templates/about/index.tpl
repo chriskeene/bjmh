@@ -26,7 +26,6 @@ Dr <a href="http://humanities.exeter.ac.uk/history/staff/terry/"><span class="s1
 <p class="p1"><b>Associate Editors</b><br />
 <span class="s1"><a href="http://www.smh-hq.org/grad/gradbio/jenniferdaley.html">Jennifer Daley</a></span> (King’s College London)<br />
 <a href="https://twitter.com/AimeeFoxGodden"><span class="s1">Aimée Fox-Godden</span></a> (University of Birmingham)<br />
-<a href="https://twitter.com/AirPowerHistory"><span class="s1">Ross Mahoney</span></a> (RAF Museum)<br />
 <a href="https://twitter.com/SBTMitchell"><span class="s1">Dr Stuart Mitchell</span></a> (Senior Lecturer RMA Sandhurst)</p>
 
 <p><strong>Journal Editorial Advisory Board</strong><br />
@@ -102,11 +101,6 @@ Stephen Prince (Naval Historical Branch – UK MoD)</p>
 	{call_hook name="Templates::About::Index::Submissions"}
 </ul>
 </div>
-{literal}
-
-<a href="https://twitter.com/Mars_Clio" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Mars_Clio</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-{/literal}
 <!--
 <div id="aboutOther">
 <h3>{translate key="about.other"}</h3>

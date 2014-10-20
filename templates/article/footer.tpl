@@ -55,7 +55,6 @@
 {$pageFooter}
 {/if}
 </div><!-- content -->
-<p>Hello</p>
 </div><!-- main -->
 </div><!-- body -->
 

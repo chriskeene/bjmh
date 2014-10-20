@@ -31,26 +31,27 @@
 <div id="bjmhfooter">
 <!-- left box -->
 <div class="footerbox">
-<p>The BJMH is a pioneering Open Access, peer-reviewed journal that brings high quality scholarship in military history to an audience beyond academia.</p>
+<ul>
+<li><a href="/index.php/bjmh/about/submissions">Send your submissions to the British Journal of Miltary History</a></li>
+<li><a href="/index.php/bjmh/information/readers">Sign up for email alerts for new issues</a></li>
+<li><a href="/index.php/bjmh/about">About</a></li>
+<li><a href="/index.php/bjmh/issue/current">Current issue</a></li>
+<li><a href="/index.php/bjmh/issue/archive">All Issues</a></li>
+</ul>
 <p>Copyright &copy; 2014, British Journal for Military History</p>
 
 </div>
 <!-- next box -->
 <div class="footerbox">
-<ul>
-<li><a href="/index.php/bjmh/about/submissions">Send your submissions to the British Journal of Miltary History</a></li>
-<li><a href="/index.php/bjmh/information/readers">Sign up for email alerts for new issues</a></li>
-<li><a href="/index.php/bjmh">About</a></li>
-<li><a href="/index.php/bjmh/issue/current">Current issue</a></li>
-<li><a href="/index.php/bjmh/issue/archive">All Issues</a></li>
-</ul>
+<a href="https://twitter.com/Mars_Clio" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @Mars_Clio</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<p style="font-size: 0.8em;">Our logo is based on the combination of Mars & Clio, the Roman God of War and the Greek Muse of History. It is the official logo of the <a href="http://www.bcmh.org.uk/index.php">BCMH</a>.</p>
 
 </div>
 
 <!-- final box -->
 <div  class="footerbox">
 <img src="http://bjmh.xd5.be/public/journals/1/homeHeaderLogoImage_en_US.jpg" width="120" height="132" alt="Logo" />
-<p style="font-size: 0.8em;">Our logo is based on the combination of Mars & Clio, the Roman God of War and the Greek Muse of History. It is the official logo of the <a href="http://www.bcmh.org.uk/index.php">BCMH</a>.</p>
 
 </div>
 <div style="clear: both;">&nbsp;</div>
