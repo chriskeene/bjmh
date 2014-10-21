@@ -38,6 +38,7 @@
 <li><a href="/index.php/bjmh/issue/current">Current issue</a></li>
 <li><a href="/index.php/bjmh/issue/archive">All Issues</a></li>
 </ul>
+<p>ISSN: 2057-0422</p>
 <p>Copyright &copy; 2014, British Journal for Military History</p>
 
 </div>

@@ -50,6 +50,7 @@ Seb Cox (Air Historical Branch – UK MoD)<br />
 Bob Evans (Army Historical Branch – UK MoD)<br />
 Stephen Prince (Naval Historical Branch – UK MoD)</p>
 </p>
+<p>ISSN 2057-0422</p>
 <!--
 <div id="aboutPeople">
 <h3>{translate key="about.people"}</h3>
