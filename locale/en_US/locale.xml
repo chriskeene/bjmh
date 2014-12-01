@@ -29,6 +29,8 @@
 
 	<!-- common -->
 	<message key="common.journal">Journal</message>
+	<!-- CJK added to replace id -->
+	<message key="common.id">Manuscript number</message>
 
 	<!-- Journal Management -->
 
@@ -134,7 +136,7 @@
 	<!-- Common Article Terms -->
 	<message key="article.article">Article</message>
 	<message key="article.articles">Articles</message>
-	<message key="article.submissionId">Submission ID</message>
+	<message key="article.submissionId">Submission manuscript number</message>
 	<message key="article.title">Title</message>
 	<message key="article.authors">Authors</message>
 	<message key="article.indexingInformation">Indexing Information</message>
