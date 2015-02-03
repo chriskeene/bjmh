@@ -34,7 +34,7 @@
 <ul>
 <li><a href="/index.php/bjmh/about/submissions">Send your submissions to the British Journal for Miltary History</a></li>
 <li><a href="/index.php/bjmh/information/readers">Sign up for email alerts for new issues</a></li>
-<li><a href="/index.php/bjmh/about">About</a></li>
+<li><a href="/index.php/bjmh/pages/view/about">About</a></li>
 <li><a href="/index.php/bjmh/issue/current">Current issue</a></li>
 <li><a href="/index.php/bjmh/issue/archive">All Issues</a></li>
 </ul>
