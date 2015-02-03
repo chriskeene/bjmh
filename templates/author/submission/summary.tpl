@@ -10,7 +10,6 @@
  *}
 <div id="submission">
 <h3>{translate key="article.submission"}</h3>
-
 <table width="100%" class="data">
 	<tr>
 		<td width="20%" class="label">{translate key="article.authors"}</td>

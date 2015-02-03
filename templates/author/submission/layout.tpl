@@ -14,7 +14,6 @@
 
 <div id="layout">
 <h3>{translate key="submission.layout"}</h3>
-
 {if $useLayoutEditors}
 <div id="layoutEditors">
 <table width="100%" class="data">
