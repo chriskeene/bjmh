@@ -13,6 +13,14 @@
 {include file="common/header.tpl"}
 {/strip}
 
+<div id="submitStart">
+<h4>{translate key="author.submit.startHereTitle"}</h4>
+{url|assign:"submitUrl" op="submit"}
+{translate submitUrl=$submitUrl key="author.submit.startHereLink"}<br />
+</div>
+
+<br />
+
 <ul class="menu">
 	<li{if ($pageToDisplay == "active")} class="current"{/if}><a href="{url op="index" path="active"}">{translate key="common.queue.short.active"}</a></li>
 	<li{if ($pageToDisplay == "completed")} class="current"{/if}><a href="{url op="index" path="completed"}">{translate key="common.queue.short.completed"}</a></li>
@@ -21,11 +29,6 @@
 <br />
 
 {include file="author/$pageToDisplay.tpl"}
-<div id="submitStart">
-<h4>{translate key="author.submit.startHereTitle"}</h4>
-{url|assign:"submitUrl" op="submit"}
-{translate submitUrl=$submitUrl key="author.submit.startHereLink"}<br />
-</div>
 
 {call_hook name="Templates::Author::Index::AdditionalItems"}
 

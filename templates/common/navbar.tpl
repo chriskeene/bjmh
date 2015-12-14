@@ -11,7 +11,7 @@
 <div id="navbar">
 	<ul class="menu">
 		<li id="home"><a href="{url page="index"}">{translate key="navigation.home"}</a></li>
-		<li id="about"><a href="{url page="about"}">{translate key="navigation.about"}</a></li>
+		<li id="about"><a href="/index.php/bjmh/pages/view/about"}">{translate key="navigation.about"}</a></li>
 
 		{if $isUserLoggedIn}
 			<li id="userHome"><a href="{url journal="index" page="user"}">{translate key="navigation.userHome"}</a></li>

@@ -8,6 +8,14 @@
  * Article View -- Footer component.
  *}
 
+ <!-- bespoke addthis code for bjmh -->
+                <p>Like and share this article</p>
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<div class="addthis_sharing_toolbox"></div>
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-542582886eb8aef7" async></script>
+                <!-- end of bjmh custom code -->
+
 {if $sharingEnabled}
 <!-- start AddThis -->
 	{if isset($sharingDropDownMenu)}

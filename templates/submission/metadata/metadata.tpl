@@ -157,10 +157,12 @@
 			<td colspan="2" class="separator">&nbsp;</td>
 		</tr>
 	{/if}
+<!-- cjk hide language
 	<tr valign="top">
 		<td width="20%" class="label">{translate key="article.language"}</td>
 		<td width="80%" class="value">{$submission->getLanguage()|escape|default:"&mdash;"}</td>
 	</tr>
+-->
 </table>
 </div>
 
@@ -176,7 +178,7 @@
 </div>
 
 {call_hook name="Templates::Submission::Metadata::Metadata::AdditionalMetadata"}
-
+<!-- 
 {if $currentJournal->getSetting('metaCitations')}
 	<div id="citations">
 	<h4>{translate key="submission.citations"}</h4>
@@ -189,6 +191,6 @@
 	</table>
 	</div>
 {/if}
-
+-->
 </div><!-- metadata -->
 

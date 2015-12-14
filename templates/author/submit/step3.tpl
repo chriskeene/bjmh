@@ -320,6 +320,8 @@ function moveAuthor(dir, authorIndex) {
 		</tr>
 		{/if}
 
+<!--
+
 		{if $currentJournal->getSetting('metaType')}
 		<tr valign="top">
 			<td width="20%" {if $currentJournal->getLocalizedSetting('metaTypeExamples') != ''}rowspan="2" {/if}class="label">{fieldLabel name="type" key="article.type"}</td>
@@ -344,11 +346,12 @@ function moveAuthor(dir, authorIndex) {
 		<tr valign="top">
 			<td><span class="instruct">{translate key="author.submit.languageInstructions"}</span></td>
 		</tr>
+-->
 		</table>
 	</div>
 	<div class="separator"></div>
 {/if}
-
+<!--
 <div id="submissionSupportingAgencies">
 <h3>{translate key="author.submit.submissionSupportingAgencies"}</h3>
 <p>{translate key="author.submit.submissionSupportingAgenciesDescription"}</p>
@@ -361,6 +364,7 @@ function moveAuthor(dir, authorIndex) {
 </table>
 </div>
 <div class="separator"></div>
+-->
 
 {call_hook name="Templates::Author::Submit::AdditionalMetadata"}
 
