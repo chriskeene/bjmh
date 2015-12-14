@@ -7,8 +7,8 @@
 /**
  * @file classes/sectionEditor/form/CreateReviewerForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CreateReviewerForm
@@ -144,7 +144,6 @@ class CreateReviewerForm extends Form {
 		$user->setCountry($this->getData('country'));
 		$user->setBiography($this->getData('biography'), null); // Localized
 		$user->setGossip($this->getData('gossip'), null); // Localized
-		$user->setMustChangePassword($this->getData('mustChangePassword') ? 1 : 0);
 
 		$authDao =& DAORegistry::getDAO('AuthSourceDAO');
 		$auth =& $authDao->getDefaultPlugin();
@@ -174,8 +173,10 @@ class CreateReviewerForm extends Form {
 		} else {
 			$user->setPassword(Validation::encryptCredentials($this->getData('username'), $password));
 		}
+		$user->setMustChangePassword(isset($auth) ? 0 : 1);
 
 		$user->setDateRegistered(Core::getCurrentDate());
+		parent::execute($user);
 		$userId = $userDao->insertUser($user);
 
 		// Insert the user interests
@@ -196,7 +197,7 @@ class CreateReviewerForm extends Form {
 			// Send welcome email to user
 			import('classes.mail.MailTemplate');
 			$mail = new MailTemplate('REVIEWER_REGISTER');
-			$mail->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+			$mail->setReplyTo(null);
 			$mail->assignParams(array('username' => $this->getData('username'), 'password' => $password, 'userFullName' => $user->getFullName()));
 			$mail->addRecipient($user->getEmail(), $user->getFullName());
 			$mail->send();

@@ -1,8 +1,8 @@
 {**
  * templates/article/article.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article View.
@@ -123,7 +123,23 @@
 		{$pubIdPlugin->getPubIdDisplayType()|escape}: {if $pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}<a id="pub-id::{$pubIdPlugin->getPubIdType()|escape}" href="{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}">{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}</a>{else}{$pubId|escape}{/if}
 	{/if}
 {/foreach}
+{if $galleys}
+	{foreach from=$pubIdPlugins item=pubIdPlugin}
+		{foreach from=$galleys item=galley name=galleyList}
+			{if $issue->getPublished()}
+				{assign var=galleyPubId value=$pubIdPlugin->getPubId($galley)}
+			{else}
+				{assign var=galleyPubId value=$pubIdPlugin->getPubId($galley, true)}{* Preview rather than assign a pubId *}
+			{/if}
+			{if $galleyPubId}
+				<br />
+				<br />
+				{$pubIdPlugin->getPubIdDisplayType()|escape} ({$galley->getGalleyLabel()|escape}): {if $pubIdPlugin->getResolvingURL($currentJournal->getId(), $galleyPubId)|escape}<a id="pub-id::{$pubIdPlugin->getPubIdType()|escape}-g{$galley->getId()}" href="{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $galleyPubId)|escape}">{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $galleyPubId)|escape}</a>{else}{$galleyPubId|escape}{/if}
+			{/if}
+		{/foreach}
+	{/foreach}
+{/if}
 {call_hook name="Templates::Article::MoreInfo"}
-{* include file="article/comments.tpl" *}
+{include file="article/comments.tpl"}
 
 {include file="article/footer.tpl"}

@@ -3,16 +3,16 @@
 <!--
   * plugins/paymethod/paypal/locale/es_ES/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2013-2015 Simon Fraser University Library
   * Copyright (c) 2006-2009 Gunther Eysenbach, Juan Pablo Alperin, MJ Suhonos
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Spanish_%28es_ES%29
-  *
   * Localization strings
   -->
  
-<locale name="es_ES" full_name="Español (España)">	<message key="plugins.paymethod.paypal.displayName">Pago de cuotas mediante PayPal</message>
+<locale name="es_ES" full_name="Español (España)">
+	<message key="plugins.paymethod.paypal.displayName">Pago de cuotas mediante PayPal</message>
 
 	<!-- PayPal Settings Form -->
 	<message key="plugins.paymethod.paypal.settings.paypalenable">Habilitar PayPal</message>
@@ -32,4 +32,4 @@
 	<message key="plugins.paymethod.paypal.purchase.description">Descripción</message>
 	<message key="plugins.paymethod.paypal.purchase.cancelled">Se canceló su compra.</message>
 	<message key="plugins.paymethod.paypal.purchase.cancelled.title">Compra cancelada</message>
-</locale> 
+</locale>

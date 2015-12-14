@@ -1,8 +1,8 @@
 {**
  * templates/submission/metadata/metadata.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subtemplate defining the submission metadata table. Non-form implementation.
@@ -157,13 +157,10 @@
 			<td colspan="2" class="separator">&nbsp;</td>
 		</tr>
 	{/if}
-
-<!-- hide language
 	<tr valign="top">
 		<td width="20%" class="label">{translate key="article.language"}</td>
 		<td width="80%" class="value">{$submission->getLanguage()|escape|default:"&mdash;"}</td>
 	</tr>
--->
 </table>
 </div>
 
@@ -179,7 +176,7 @@
 </div>
 
 {call_hook name="Templates::Submission::Metadata::Metadata::AdditionalMetadata"}
-<!--
+
 {if $currentJournal->getSetting('metaCitations')}
 	<div id="citations">
 	<h4>{translate key="submission.citations"}</h4>
@@ -192,7 +189,6 @@
 	</table>
 	</div>
 {/if}
--->
 
 </div><!-- metadata -->
 

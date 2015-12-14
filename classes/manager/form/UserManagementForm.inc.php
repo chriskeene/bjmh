@@ -3,8 +3,8 @@
 /**
  * @file classes/manager/form/UserManagementForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserManagementForm
@@ -26,7 +26,8 @@ class UserManagementForm extends Form {
 	function UserManagementForm($userId = null) {
 		parent::Form('manager/people/userProfileForm.tpl');
 
-		if (!Validation::isJournalManager()) $userId = null;
+		$journal =& Request::getJournal();
+		if ($userId && !Validation::canAdminister($journal->getId(), $userId)) $userId = null;
 		$this->userId = isset($userId) ? (int) $userId : null;
 		$site =& Request::getSite();
 
@@ -181,9 +182,13 @@ class UserManagementForm extends Form {
 			$roleSymbolic = $roleDao->getRolePath($roleId);
 
 			$this->_data = array(
-				'enrollAs' => array($roleSymbolic)
+				'enrollAs' => array($roleSymbolic),
+				'generatePassword' => 1,
+				'sendNotify' => 1,
+				'mustChangePassword' => 1
 			);
 		}
+		return parent::initData();
 	}
 
 	/**
@@ -315,9 +320,8 @@ class UserManagementForm extends Form {
 				// FIXME Should try to create user here too?
 				$auth->doSetUserInfo($user);
 			}
-
+			parent::execute($user);
 			$userDao->updateObject($user);
-
 		} else {
 			$user->setUsername($this->getData('username'));
 			if ($this->getData('generatePassword')) {
@@ -338,6 +342,7 @@ class UserManagementForm extends Form {
 			}
 
 			$user->setDateRegistered(Core::getCurrentDate());
+			parent::execute($user);
 			$userId = $userDao->insertUser($user);
 
 			$isManager = Validation::isJournalManager();
@@ -362,7 +367,7 @@ class UserManagementForm extends Form {
 				// Send welcome email to user
 				import('classes.mail.MailTemplate');
 				$mail = new MailTemplate('USER_REGISTER');
-				$mail->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+				$mail->setReplyTo(null);
 				$mail->assignParams(array('username' => $this->getData('username'), 'password' => $password, 'userFullName' => $user->getFullName()));
 				$mail->addRecipient($user->getEmail(), $user->getFullName());
 				$mail->send();

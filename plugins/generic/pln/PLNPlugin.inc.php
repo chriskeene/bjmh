@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/PLNPlugin.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class PLNPlugin
@@ -14,25 +14,29 @@
  */
 
 import('lib.pkp.classes.plugins.GenericPlugin');
+import('lib.pkp.classes.config.Config');
 import('classes.article.PublishedArticle');
 import('classes.issue.Issue');
 
 define('PLN_PLUGIN_NAME','plnplugin');
 
-define('PLN_PLUGIN_NETWORKS', serialize(array(
-	'PKP' => 'pkp-pln.lib.sfu.ca'
-)));
+// defined here in case an upgrade doesn't pick up the default value.
+define('PLN_DEFAULT_NETWORK', 'http://pkp-pln.lib.sfu.ca');
 
 define('PLN_PLUGIN_HTTP_STATUS_OK', 200);
 define('PLN_PLUGIN_HTTP_STATUS_CREATED', 201);
 
 define('PLN_PLUGIN_XML_NAMESPACE','http://pkp.sfu.ca/SWORD');
+
+// base IRI for the SWORD server. IRIs are constructed by appending to 
+// this constant.
+define('PLN_PLUGIN_BASE_IRI', '/api/sword/2.0');
 // used to retrieve the service document
-define('PLN_PLUGIN_SD_IRI','/api/sword/2.0/sd-iri');
+define('PLN_PLUGIN_SD_IRI', PLN_PLUGIN_BASE_IRI . '/sd-iri');
 // used to submit a deposit
-define('PLN_PLUGIN_COL_IRI','/api/sword/2.0/col-iri');
+define('PLN_PLUGIN_COL_IRI',PLN_PLUGIN_BASE_IRI . '/col-iri');
 // used to edit and query the state of a deposit
-define('PLN_PLUGIN_CONT_IRI','/api/sword/2.0/cont-iri');
+define('PLN_PLUGIN_CONT_IRI',PLN_PLUGIN_BASE_IRI . '/cont-iri');
 
 define('PLN_PLUGIN_ARCHIVE_FOLDER','pln');
 
@@ -55,6 +59,7 @@ define('PLN_PLUGIN_NOTIFICATION_TYPE_ISSN_MISSING',		PLN_PLUGIN_NOTIFICATION_TYP
 define('PLN_PLUGIN_NOTIFICATION_TYPE_HTTP_ERROR',		PLN_PLUGIN_NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000003);
 define('PLN_PLUGIN_NOTIFICATION_TYPE_CURL_MISSING',		PLN_PLUGIN_NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000004);
 define('PLN_PLUGIN_NOTIFICATION_TYPE_ZIP_MISSING',		PLN_PLUGIN_NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000005);
+define('PLN_PLUGIN_NOTIFICATION_TYPE_TAR_MISSING',		PLN_PLUGIN_NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000006);
 
 class PLNPlugin extends GenericPlugin {
 
@@ -87,6 +92,7 @@ class PLNPlugin extends GenericPlugin {
 				$this->import('classes.DepositObject');
 				$this->import('classes.DepositPackage');
 			
+				HookRegistry::register('PluginRegistry::loadCategory', array(&$this, 'callbackLoadCategory'));			
 				HookRegistry::register('JournalDAO::deleteJournalById', array($this, 'callbackDeleteJournalById'));
 				HookRegistry::register('LoadHandler', array($this, 'callbackLoadHandler'));
 				HookRegistry::register('NotificationManager::getNotificationContents', array($this, 'callbackNotificationContents'));
@@ -170,21 +176,48 @@ class PLNPlugin extends GenericPlugin {
 	
 	/**
 	 * @see PKPPlugin::getSetting()
-	 * @param $journalId string
+	 * @param $journalId int
 	 * @param $settingName string
 	 */
 	function getSetting($journalId,$settingName) {
-
 		// if there isn't a journal_uuid, make one
-		if ($settingName == 'journal_uuid') {
-			$uuid = parent::getSetting($journalId, $settingName);
-			if ($uuid) return $uuid;
-			$this->updateSetting($journalId, $settingName, $this->newUUID());
+                switch ($settingName) {
+			case 'journal_uuid':
+				$uuid = parent::getSetting($journalId, $settingName);
+				if (!is_null($uuid) && $uuid != '')
+					return $uuid;
+				$this->updateSetting($journalId, $settingName, $this->newUUID());
+				break;
+			case 'pln_network':
+				$network = parent::getSetting($journalId, 'pln_network');
+				if($network) return $network;
+				$network = Config::getVar('lockss', 'pln_url', PLN_DEFAULT_NETWORK);
+				$this->updateSetting($journalId, 'pln_network', $network);
+				break;
+			default:
+				break;
 		}
-		
 		return parent::getSetting($journalId,$settingName);
 	}
-	
+
+	/**
+	 * Register as a gateway plugin.
+	 * @param $hookName string
+	 * @param $args array
+	 */
+	function callbackLoadCategory($hookName, $args) {
+		$category =& $args[0];
+		$plugins =& $args[1];
+		switch ($category) {
+			case 'gateways':
+				$this->import('PLNGatewayPlugin');
+				$gatewayPlugin = new PLNGatewayPlugin($this->getName());
+				$plugins[$gatewayPlugin->getSeq()][$gatewayPlugin->getPluginPath()] =& $gatewayPlugin;
+				break;
+		}
+		return false;
+	}
+
 	/**
 	 * Delete all plug-in data for a journal when the journal is deleted
 	 * @param $hookName string (JournalDAO::deleteJournalById)
@@ -417,7 +450,7 @@ class PLNPlugin extends GenericPlugin {
 		$termsAgreed = unserialize($this->getSetting($journalId, 'terms_of_use_agreement'));
 		
 		foreach (array_keys($terms) as $term) {
-			if (!isset($termsAgreed[$term]) || ($termsAgreed[$term] == false)) return false;
+			if (!isset($termsAgreed[$term]) || (!$termsAgreed[$term])) return false;
 		}
 		
 		return true;
@@ -426,25 +459,36 @@ class PLNPlugin extends GenericPlugin {
 	/**
 	 * Request service document at specified URL
 	 * @param $journalId int The journal id for the service document we wish to fetch
-	 * @return int The HTTP response status
+	 * @return int The HTTP response status or FALSE for a network error.
 	 */
 	function getServiceDocument($journalId) {
 			
-		$plnNetworks = unserialize(PLN_PLUGIN_NETWORKS);
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
 		$journal =& $journalDao->getById($journalId);
-		
+
+		// get the journal and determine the language.
+		$locale = $journal->getPrimaryLocale();
+		$language = strtolower(str_replace('_', '-', $locale));
+		$network = $this->getSetting($journal->getId(), 'pln_network');
 		// retrieve the service document
 		$result = $this->_curlGet(
-			'http://' . $plnNetworks[$this->getSetting($journalId, 'pln_network')] . PLN_PLUGIN_SD_IRI,
+			$network . PLN_PLUGIN_SD_IRI,
 			array(
 				'On-Behalf-Of: '.$this->getSetting($journalId, 'journal_uuid'),
-				'Journal-URL: '.$journal->getUrl()
+				'Journal-URL: '.$journal->getUrl(),
+				'Accept-language:' . $language,
 			)
 		);
 		
 		// stop here if we didn't get an OK
-		if ($result['status'] != PLN_PLUGIN_HTTP_STATUS_OK) return $result['status'];
+		if ($result['status'] != PLN_PLUGIN_HTTP_STATUS_OK) {
+			if($result['status'] === FALSE) {
+				error_log(__('plugins.generic.pln.error.network.servicedocument', array('error' => $result['error'])));
+			} else {
+				error_log(__('plugins.generic.pln.error.http.servicedocument', array('error' => $result['status'])));
+			}
+			return $result['status'];
+		}
 
 		$serviceDocument = new DOMDocument();
 		$serviceDocument->preserveWhiteSpace = false;
@@ -477,7 +521,7 @@ class PLNPlugin extends GenericPlugin {
 		if ($newTerms != $oldTerms) {
 			$termAgreements = array();
 			foreach($terms as $termName => $termText) {
-				$termAgreements[$termName] = false;
+				$termAgreements[$termName] = null;
 			}
 		
 			$this->updateSetting($journalId, 'terms_of_use', $newTerms, 'object');
@@ -528,6 +572,14 @@ class PLNPlugin extends GenericPlugin {
 	function zipInstalled() {
 		return class_exists('ZipArchive');
 	}
+        
+        /**
+         * Check if the Archive_Tar extension is installed and available. BagIt
+         * requires it, and will not function without it.
+         */
+        function tarInstalled() {
+                return class_exists('Archive_Tar');
+        }
 	
 	/**
 	 * Get resource using CURL
@@ -629,16 +681,7 @@ class PLNPlugin extends GenericPlugin {
 	 * @return string
 	 */
 	function newUUID() {
-		
-		mt_srand((double)microtime()*10000);
-		$charid = strtoupper(md5(uniqid(rand(), true)));
-		$hyphen = '-';
-		$uuid = substr($charid, 0, 8).$hyphen
-				.substr($charid, 8, 4).$hyphen
-				.substr($charid,12, 4).$hyphen
-				.substr($charid,16, 4).$hyphen
-				.substr($charid,20,12);
-		return $uuid;
+		return String::generateUUID();
 	}
 	
 

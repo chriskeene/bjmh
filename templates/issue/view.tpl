@@ -1,8 +1,8 @@
 {**
  * templates/issue/view.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * View issue -- This displays the issue TOC or title page, as appropriate,
@@ -20,18 +20,6 @@
 		{/if}
 	</div>
 {/if}
-
-
-
-{** code copied from archive file to show thumbnail image *}
-{if $issue->getLocalizedFileName() && $issue->getShowCoverPage($locale) && !$issue->getHideCoverPageArchives($locale)}
-                <div class="issueCoverImage"><a href="{url op="view" page="issue" path=$issue->getBestIssueId($currentJournal)}"><img src="{$coverPagePath|escape}{$issue->getFileName($locale)|escape}"{if $issue->getCoverPageAltText($locale) != ''} alt="{$issue->getCoverPageAltText($locale)|escape}"{else} alt="{translate key="issue.coverPage.altText"}"{/if}/></a>
-                </div>
-              <!--  <h4><a href="{url op="view" path=$issue->getBestIssueId($currentJournal)}">{$issue->getIssueIdentification()|escape}</a></h4> -->
-                <div class="issueCoverDescription">{$issue->getLocalizedCoverPageDescription()|strip_unsafe_html|nl2br}</div>
-{/if}
-
-
 {if !$showToc && $issue}
 	{if $issueId}
 		{url|assign:"currentUrl" page="issue" op="view" path=$issueId|to_array:"showToc"}

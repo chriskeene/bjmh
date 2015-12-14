@@ -3,8 +3,8 @@
 <!--
   * locale/ca_ES/grid.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -57,7 +57,6 @@
 	<message key="grid.action.sendToProduction">Envia aquesta tramesa a producció</message>
 	<message key="grid.action.settings">Configuració</message>
 	<message key="grid.action.importexport">Importa o exporta continguts o dades del lloc web</message>
-	<message key="grid.action.restoreDefaults">Restaura els valors per defecte</message>
 	<message key="grid.action.orderItems">Habilita el mode d'ordenació</message>
 	<message key="grid.action.editSubmissionChecklist">Edita aquest element de la llista de verificació</message>
 	<message key="grid.action.deleteSubmissionChecklist">Elimina aquest element de la llista de verificació</message>
@@ -208,4 +207,4 @@
 	<!-- Plugins -->
 	<message key="grid.plugin.allCategories">Totes les categories</message>
 	<message key="grid.plugin.disable">Esteu segur que voleu inhabilitar aquest mòdul?</message>
-</locale> 
+</locale>

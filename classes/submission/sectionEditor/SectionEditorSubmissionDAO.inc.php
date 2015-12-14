@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/sectionEditor/SectionEditorSubmissionDAO.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * With contributions from:
@@ -598,15 +598,17 @@ class SectionEditorSubmissionDAO extends DAO {
 			'SELECT	COUNT(*) AS review_count
 			FROM	articles a
 				LEFT JOIN edit_assignments e ON (a.article_id = e.article_id)
+				LEFT JOIN edit_assignments e2 ON (a.article_id = e2.article_id AND e.edit_id < e2.edit_id AND e2.editor_id=?)
 				LEFT JOIN edit_decisions d ON (a.article_id = d.article_id)
 				LEFT JOIN edit_decisions d2 ON (a.article_id = d2.article_id AND d.edit_decision_id < d2.edit_decision_id)
 			WHERE	a.journal_id = ?
 				AND e.editor_id = ?
+				AND e2.edit_id IS NULL
 				AND a.submission_progress = 0
 				AND a.status = ' . STATUS_QUEUED . '
 				AND d2.edit_decision_id IS NULL
 				AND (d.decision IS NULL OR d.decision <> ' . SUBMISSION_EDITOR_DECISION_ACCEPT . ')',
-			array((int) $journalId, (int) $sectionEditorId)
+			array((int) $sectionEditorId, (int) $journalId, (int) $sectionEditorId)
 		);
 		$submissionsCount[0] = $result->Fields('review_count');
 		$result->Close();
@@ -618,15 +620,17 @@ class SectionEditorSubmissionDAO extends DAO {
 			'SELECT	COUNT(*) AS editing_count
 			FROM	articles a
 				LEFT JOIN edit_assignments e ON (a.article_id = e.article_id)
+				LEFT JOIN edit_assignments e2 ON (a.article_id = e2.article_id AND e.edit_id < e2.edit_id AND e2.editor_id=?)
 				LEFT JOIN edit_decisions d ON (a.article_id = d.article_id)
 				LEFT JOIN edit_decisions d2 ON (a.article_id = d2.article_id AND d.edit_decision_id < d2.edit_decision_id)
 			WHERE	a.journal_id = ?
 				AND e.editor_id = ?
+				AND e2.edit_id IS NULL
 				AND a.submission_progress = 0
 				AND a.status = ' . STATUS_QUEUED . '
 				AND d2.edit_decision_id IS NULL
 				AND d.decision = ' . SUBMISSION_EDITOR_DECISION_ACCEPT,
-			array((int) $journalId, (int) $sectionEditorId)
+			array((int) $sectionEditorId, (int) $journalId, (int) $sectionEditorId)
 		);
 		$submissionsCount[1] = $result->Fields('editing_count');
 		$result->Close();
@@ -817,7 +821,7 @@ class SectionEditorSubmissionDAO extends DAO {
 				u.last_name,
 				ar.review_id,
 				(SELECT AVG(ra.quality) FROM review_assignments ra WHERE ra.reviewer_id = u.user_id) AS average_quality,
-				(SELECT COUNT(ac.review_id) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL) AS completed,
+				(SELECT COUNT(ac.review_id) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL AND ac.cancelled = 0) AS completed,
 				(SELECT COUNT(ac.review_id) FROM review_assignments ac, articles a WHERE
 					ac.reviewer_id = u.user_id AND
 					ac.submission_id = a.article_id AND
@@ -827,7 +831,7 @@ class SectionEditorSubmissionDAO extends DAO {
 					ac.declined = 0 AND
 					a.status <> '.STATUS_QUEUED.') AS incomplete,
 				(SELECT MAX(ac.date_notified) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL) AS latest,
-				(SELECT AVG(ac.date_completed-ac.date_notified) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL) AS average
+				(SELECT AVG(ac.date_completed-ac.date_notified) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL AND ac.cancelled = 0) AS average
 			 FROM users u
 				LEFT JOIN review_assignments ra ON (ra.reviewer_id = u.user_id)
 				LEFT JOIN review_assignments ar ON (ar.reviewer_id = u.user_id AND ar.cancelled = 0 AND ar.submission_id = ? AND ar.round = ?)
@@ -1325,6 +1329,7 @@ class SectionEditorSubmissionDAO extends DAO {
 			case 'active': return 'active';
 			case 'average': return 'average';
 			case 'name': return 'u.last_name';
+			case 'status': return 'a.status';
 			default: return null;
 		}
 	}

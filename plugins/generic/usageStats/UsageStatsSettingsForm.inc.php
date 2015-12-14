@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/usageStats/UsageStatsSettingsForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UsageStatsSettingsForm
@@ -37,24 +37,26 @@ class UsageStatsSettingsForm extends Form {
 	function initData() {
 		$plugin =& $this->plugin;
 
-		$this->setData('createLogFiles', $plugin->getSetting(CONTEXT_SITE, 'createLogFiles'));
-		$this->setData('accessLogFileParseRegex', $plugin->getSetting(0, 'accessLogFileParseRegex'));
-		$this->setData('minTimeBetweenRequests', $plugin->getSetting(0, 'minTimeBetweenRequests'));
+		$this->setData('createLogFiles', $plugin->getSetting(CONTEXT_ID_NONE, 'createLogFiles'));
+		$this->setData('accessLogFileParseRegex', $plugin->getSetting(CONTEXT_ID_NONE, 'accessLogFileParseRegex'));
+		$this->setData('dataPrivacyOption', $plugin->getSetting(CONTEXT_ID_NONE, 'dataPrivacyOption'));
 	}
 
 	/**
 	 * Assign form data to user-submitted data.
 	 */
 	function readInputData() {
-		$this->readUserVars(array('createLogFiles','accessLogFileParseRegex', 'minTimeBetweenRequests'));
+		$this->readUserVars(array('createLogFiles','accessLogFileParseRegex', 'dataPrivacyOption'));
 	}
 
 	/**
 	 * @see Form::fetch()
 	 */
 	function display() {
-		$templateMgr =& TemplateManager::getManager($request);
+		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('pluginName', $this->plugin->getName());
+		$saltFilepath = Config::getVar('usageStats', 'salt_filepath');
+		$templateMgr->assign('saltFilepath', $saltFilepath && file_exists($saltFilepath) && is_writable($saltFilepath));
 		parent::display();
 	}
 
@@ -64,9 +66,9 @@ class UsageStatsSettingsForm extends Form {
 	function execute() {
 		$plugin =& $this->plugin;
 
-		$plugin->updateSetting(0, 'createLogFiles', $this->getData('createLogFiles'));
-		$plugin->updateSetting(0, 'accessLogFileParseRegex', $this->getData('accessLogFileParseRegex'));
-		$plugin->updateSetting(0, 'minTimeBetweenRequests', (int)$this->getData('minTimeBetweenRequests'));
+		$plugin->updateSetting(CONTEXT_ID_NONE, 'createLogFiles', $this->getData('createLogFiles'));
+		$plugin->updateSetting(CONTEXT_ID_NONE, 'accessLogFileParseRegex', $this->getData('accessLogFileParseRegex'));
+		$plugin->updateSetting(CONTEXT_ID_NONE, 'dataPrivacyOption', $this->getData('dataPrivacyOption'));
 	}
 
 }

@@ -1,20 +1,12 @@
 {**
  * templates/article/footer.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article View -- Footer component.
  *}
-
- <!-- bespoke addthis code for bjmh -->
-                <p>Like and share this article</p>
-                <!-- Go to www.addthis.com/dashboard to customize your tools -->
-<div class="addthis_sharing_toolbox"></div>
-                <!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-542582886eb8aef7" async></script>
-                <!-- end of bjmh custom code -->
 
 {if $sharingEnabled}
 <!-- start AddThis -->
@@ -26,15 +18,13 @@
 		{/if}
 		<br />
 		<br />
-
-
 		<div class="addthis_container">
 			<a href="http://www.addthis.com/bookmark.php"
 				onmouseover="return addthis_open(this, '', '{$sharingArticleURL|escape:"javascript"}', '{$sharingArticleTitle|escape:"javascript"}')"
 				onmouseout="addthis_close()" onclick="return addthis_sendto()">
 					<img src="{$sharingButtonUrl}" width="{$sharingButtonWidth}" height="{$sharingButtonHeight}" border="0" alt="Bookmark and Share" style="border:0;padding:0" />
 			</a>
-			<script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script>
+			<script type="text/javascript" src="//s7.addthis.com/js/200/addthis_widget.js"></script>
 		</div>
 	{else}
 		<a href="http://www.addthis.com/bookmark.php"
@@ -53,9 +43,13 @@
 		<br/><br/>
 		{translate key="submission.copyrightStatement" copyrightYear=$article->getCopyrightYear()|escape copyrightHolder=$article->getLocalizedCopyrightHolder()|escape}
 	{/if}
-	{if $currentJournal->getSetting('includeLicense') && $ccLicenseBadge}
+	{if $currentJournal->getSetting('includeLicense')}
 		<br /><br />
-		{$ccLicenseBadge}
+		{if $ccLicenseBadge}
+			{$ccLicenseBadge}
+		{elseif $article->getLicenseURL()}
+			{translate key="submission.licenseURL"}: <a href="{$article->getLicenseURL()|escape}" rel="license">{$article->getLicenseURL()|escape}</a>
+		{/if}
 	{/if}
 {/if}
 
@@ -93,12 +87,12 @@
 		document.captureEvents(Event.DBLCLICK);
 	}
 
-	// Make sure to only open the reading tools when double clicking within the galley	
+	// Make sure to only open the reading tools when double clicking within the galley
 	if (document.getElementById('inlinePdfResizer')) {
-		context = document.getElementById('inlinePdfResizer');	
+		context = document.getElementById('inlinePdfResizer');
 	}
 	else if (document.getElementById('content')) {
-		context = document.getElementById('content');	
+		context = document.getElementById('content');
 	}
 	else {
 		context = document;

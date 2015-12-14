@@ -1,8 +1,8 @@
 {**
  * templates/author/submission/management.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subtemplate defining the author's submission management table.
@@ -10,7 +10,6 @@
  *}
 <div id="submission">
 <h3>{translate key="article.submission"}</h3>
-ihh
 <table width="100%" class="data">
 	<tr valign="top">
 		<td width="20%" class="label">{translate key="article.authors"}</td>
